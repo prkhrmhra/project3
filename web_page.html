@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Girlfriend Day, Madam 🖤✨</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body> 
+   <button id="playBtn" style="position: fixed; top: 20px; right: 20px; z-index: 1000; background: gold; color: black; padding: 10px 15px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer;">
+      🎶 Play Our Song
+   </button>
+
+
+  <!-- Background Music -->
+   <audio id="bgMusic" autoplay loop>
+      <source src="1.mp3" type="audio/mpeg">
+   </audio>
+
+
+  <!-- Landing Section -->
+  <section class="landing">
+    <div class="content">
+      <h1 class="glow">Happy Girlfriend Day, Madam 🖤✨</h1>
+      <p class="subtitle">Scroll down, my love...</p>
+    </div>
+  </section>
+
+  <!-- Love Note Section (placeholder) -->
+  <section class="love-note">
+    <div class="photo-placeholder">
+      <!-- Add Polaroid-style image here -->
+      <img src="IMG20250202171327.jpg" alt="Us 💖">
+    </div>
+    <div class="note-container">
+      <!-- Love letter will go here in next step -->
+       <p>To my dearest Madam,</p>
+
+        <p>When you showed up in my world, everything got brighter. You’re not just my present—you’re my whole future.</p>
+
+        <p>Some connections just feel meant to be. When our souls met, it was like they gently said, ‘I’ve been looking for you.’</p>
+
+        <p>I never really bought into destiny until you came along. Now, no matter where I go, it feels like life always brings me back to you.</p>
+
+        <p>You reached into my heart and claimed it all for yourself. These days, every beat feels a little softer, a little brighter, all because of you.</p>
+
+        <p>Every time I see you, it feels like the best hello, and saying goodbye is always the hardest part. Loving you just comes naturally to me.</p>
+
+        <p>Honestly, I fall in love with you all over again—every time you laugh, every hug we share, and every look we exchange.</p>
+
+        <p>When life gets hectic, you’re my steady place. You bring out my smile even in quiet moments, and you fill every beat of my heart with love.</p>
+
+        <p>Being with you feels just like coming home—safe, warm, and exactly where I’m supposed to be.</p>
+
+        <p>You’re the peace after my chaos, and the light after my darkest days. Somehow, everything just falls into place with you by my side.</p>
+
+        <p>Your love isn’t just something I experience—it’s part of my every day, the air around me, the place I live and breathe in.</p>
+
+        <p>No matter how far apart we are, or how much time passes, my heart will always find its way back to yours. It’s like we were destined to cross paths.</p>
+
+        <p>Every moment I spend with you reminds me that the universe really can be kind, and that true love is out there.</p>
+
+        <p>You’re my once-in-a-lifetime love—the story people dream of, write about, and hold in their hearts forever.</p>
+
+        <p>I never realized my heart was incomplete until you came and filled that empty space so perfectly.</p>
+
+        <p>If I could keep one thing for all time, it wouldn’t be the hours or the days—it would be you.</p>
+
+        <p class="signature">Yours forever, <br> <span style="color: #ffd700;">Bubbu 💖</span></p>
+    </div>
+  </section>
+
+  <!-- Ending Section (placeholder) -->
+    <!-- Ending Section -->
+  <section class="ending-section">
+     <div class="love-message">
+       <h1>I LOVE YOU</h1>
+        <p>Forever yours, Bubbu 💖</p>
+     </div>
+     <div class="glitter"></div>
+  </section>
+
+   
+    <script>
+      const bgMusic = document.getElementById('bgMusic');
+      const playBtn = document.getElementById('playBtn');
+
+      playBtn.addEventListener('click', () => {
+      bgMusic.play().then(() => {
+      playBtn.textContent = '🎶 Playing...';
+      playBtn.disabled = true;
+      playBtn.style.opacity = '0.6';
+     }).catch((error) => {
+      alert('Please click again to allow music playback!');
+     });
+     });
+   </script>
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Romantic Game Zone</title>
+  <style>
+    body {
+      margin: 0;
+      background: radial-gradient(circle at top, #000, #1a1a1a);
+      font-family: 'Segoe UI', sans-serif;
+      color: #fff;
+    }
+
+.section {
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.tab {
+  background: #222;
+  border: 1px solid #555;
+  color: #fff;
+  padding: 12px 20px;
+  margin: 5px;
+  cursor: pointer;
+  border-radius: 20px;
+  transition: background 0.3s;
+}
+
+.tab:hover, .tab.active {
+  background: #e6b800;
+  color: #000;
+}
+
+.game {
+  display: none;
+  animation: fadeIn 0.6s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.game.active {
+  display: block;
+}
+
+.btn {
+  padding: 10px 20px;
+  background: #fff;
+  color: #000;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  margin: 10px;
+  display: block;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.btn:hover {
+  background: #e6b800;
+  color: #000;
+}
+.petal {
+  display: inline-block;
+  background: #ff4d6d;
+  color: #fff;
+  padding: 10px 15px;
+  margin: 5px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.petal:hover {
+  background: #e6004c;
+}
+.gift-box {
+  cursor: pointer;
+  animation: bounce 1.5s infinite;
+  display: inline-block;
+  margin-top: 20px;
+}
+
+.gift-img {
+  width: 120px;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #e6b800;
+  transition: transform 0.3s ease;
+}
+
+.gift-box:hover .gift-img {
+  transform: scale(1.1);
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-15px);
+  }
+  60% {
+    transform: translateY(-7px);
+  }
+}
+
+/* Modal Styles */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.modal-content {
+  background-color: #1a1a1a;
+  margin: auto;
+  padding: 20px;
+  border: 2px solid #e6b800;
+  width: 80%;
+  max-width: 400px;
+  border-radius: 15px;
+  color: white;
+  text-align: center;
+}
+
+.close {
+  color: #e6b800;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: #fff;
+}
+#constellationCanvas {
+  background: #000;
+  border: 2px solid #e6b800;
+  border-radius: 10px;
+}
+
+.star {
+  fill: white;
+  stroke: gold;
+  stroke-width: 1px;
+}
+#bubbleCanvas {
+  background: #111;
+  border: 2px solid #e6b800;
+  border-radius: 10px;
+}
+#messageList {
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 10px;
+  background: #1a1a1a;
+  border-radius: 10px;
+  border: 1px solid #e6b800;
+  color: #ffc;
+  font-size: 0.9em;
+}
+.btn {
+    background: gold;
+    color: black;
+    padding: 12px 24px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+    margin-top: 30px;
+    transition: background 0.3s;
+}
+.btn:hover {
+    background: #fff;
+    color: #e91e63;
+}
+
+
+
+canvas {
+  background: #333;
+  border: 2px solid #e6b800;
+  margin-top: 20px;
+}
+
+#quiz-result {
+  font-size: 1.2em;
+  margin-top: 20px;
+}
+
+  </style>
+</head>
+<body>
+  <div class="section">
+    <h1>Mini Game Zone 💖</h1>
+    <div class="tabs">
+      <div class="tab active" onclick="showGame(0)">Love Quiz</div>
+      <div class="tab" onclick="showGame(1)">Catch My Love</div>
+      <div class="tab" onclick="showGame(2)">Petal Reveal</div>
+      <div class="tab" onclick="showGame(3)">Gift Box Click</div>
+      <div class="tab" onclick="showGame(4)">Constellation Connect</div>
+      <div class="tab" onclick="showGame(5)">Pop the Bubbles</div>
+      <div class="tab" onclick="showGame(6)">Surprise</div>
+    </div>
+
+```
+<!-- Game Sections -->
+<div class="game active" id="game0">
+  <h2>Love Quiz</h2>
+  <div id="quiz-container"></div>
+  <button class="btn" onclick="nextQuestion()">Next</button>
+  <div id="quiz-result"></div>
+</div>
+
+<div class="game" id="game1">
+  <h2>Catch My Love</h2>
+  <p>Move the catcher with ← → keys to collect falling hearts 💖</p>
+  <canvas id="heartCanvas" width="360" height="400"></canvas>
+  <p id="catch-score">Score: 0</p>
+</div>
+
+
+<div class="game" id="game2">
+  <h2>Petal Reveal</h2>
+  <p>Click petals to reveal a secret message!</p>
+  <div id="petals"></div>
+</div>
+
+
+<div class="game" id="game3">
+  <h2>Gift Box Click</h2>
+  <p>Click the gift to reveal a surprise 💝</p>
+  <div class="gift-box" onclick="showGift()">
+  <img src="3.png" alt="Gift Box" class="gift-img" />
+ </div>
+
+  <!-- Surprise Modal -->
+ <div id="giftModal" class="modal">
+   <div class="modal-content">
+    <span class="close" onclick="closeGift()">&times;</span>
+    <h3>💝 Your Surprise 💝</h3>
+    <p>You get unlimited hugs, kisses, and love! 💖</p>
+    <img src="2.jpg" alt="Surprise" class="gift-img" />
+   </div>
+ </div>
+</div>
+
+
+
+ <div class="game" id="game4">
+   <h2>Constellation Connect 🌌</h2>
+   <p>Connect the stars to form a secret shape!</p>
+   <canvas id="constellationCanvas" width="300" height="300"></canvas>
+   <p id="constellationMessage" style="margin-top: 15px;"></p>
+ </div>
+
+  <div class="game" id="game5">
+   <h2>Pop the Bubbles 💭</h2>
+   <p>Click the bubbles to reveal love messages 💕</p>
+   <canvas id="bubbleCanvas" width="300" height="400"></canvas>
+   <div id="messageList" style="margin-top: 20px; text-align: left;"></div>
+  </div>
+
+<div class="game" id="game6">
+     <h2>Ready for the Final Surprise? 💖</h2>
+     <a href="web_page.html" class="btn">Take Me There 🌹</a>
+  </div>
+
+  <script>
+    const games = document.querySelectorAll('.game');
+    const tabs = document.querySelectorAll('.tab');
+
+    function showGame(index) {
+      games.forEach((game, i) => {
+        game.classList.toggle('active', i === index);
+        tabs[i].classList.toggle('active', i === index);
+      });
+    }
+
+    const quizData = [
+      {
+        q: "What was my first thought when I saw you for the very first time?",
+        options: [
+        "She looks kind.",
+        "She’s going to be important.",
+        "Wow, she’s beautiful.",
+        "Who is this angel?"],
+        correct: 1
+      },
+      {
+       q: "What was my first thought when I saw you?",
+       options: [
+       "She looks kind",
+       "She’s going to be important",
+       "She’s mysterious",
+       "Cute, but trouble 😜"],
+        correct: 1
+      },
+      {
+        q: "How did I feel on our first video call?",
+        options: [
+        "Normal",
+        "Nervous, but excited",
+        "Confused",
+        "Already in love (thoda zyada ho gaya? 😅)"],
+        correct: 1
+      },
+      {
+        q: "When did we first meet?",
+        options: [
+        "In a dream 🌙",
+        "During college 🎓",
+        "At a coffee shop ☕"],
+        correct: 0
+      },
+      {
+        q: "When did we officially become “us”?",
+        options: [
+        "26 June",
+        "Valentine’s Day",
+        "New Year’s Eve",
+        "Baseless date from my imagination 😅"],
+        correct: 0
+      },
+      {
+        q: "What date do I always remember (no matter what)?",
+        options: [
+        "Your birthday",
+        "My birthday",
+        "Your exam date",
+        "Our first video call" ],
+        correct: 0 // Or 1, since you marked both; adjust as needed
+      },
+      {
+        q: "What’s my favorite thing about you?",
+        options: [
+        "Your smile",
+        "Your eyes",
+        "Your voice",
+        "Your hair"],
+        correct: 0
+      },
+      {
+        q: "What do I secretly love about you most?",
+        options: [
+        "The way you talk",
+        "The way you care for people",
+        "The way you get jealous",
+        "The way you eat"],
+        correct: 1
+      },
+      {
+        q: "What nickname do I love calling you?",
+        options: [
+        "Baby",
+        "Madam",
+        "Love",   
+        "Cutie"],
+        correct: 1
+      },
+      {
+        q: "What’s my Bhojpuri nickname for you (if I had one)?",
+        options: [
+        "Raja ji",  
+        "Madamwa ❤",
+        "Soniya",
+        "Jaaneman re"],
+        correct: 1
+      },
+      {
+        q: "Which song reminds me of you?",
+        options: [
+        "CO2 – Prateek Kuhad",
+        "Perfect – Ed Sheeran",
+        "Hasi Ban Gaye",
+        "Tum Mile"],
+        correct: 0
+      },
+      {
+        q: "What color reminds me of you?",
+        options: [
+        "Red",
+        "Pink",
+        "Black & Gold",
+        "Blue"],
+        correct: 2
+      },
+      {
+        q: "Which of these is most “us”?",
+        options: [
+       "Late-night talks",
+       "Inside jokes",
+       "Random cuddles",
+       "All of the above"],
+        correct: 3
+      },
+      {
+        q: "What's our favorite time together?",
+        options: [
+        "Midnight talks 🌌",
+        "Morning workouts 🏋♀",
+        "Watching cricket 🏏"],
+        correct: 0
+      },
+      {
+        q: "What makes me smile instantly?",
+        options: [
+        "Pizza",
+        "Memes",
+        "Seeing your name pop up on my phone",
+        "Sleep"],
+        correct: 2
+      },
+      {
+        q: "Your smile is like...",
+        options: [
+        "Rainbows 🌈",
+        "A warm hug 🫂",
+        "Thunderstorms ⚡"],
+        correct: 1
+      },
+      {
+        q: "When do I miss you the most?",
+        options: [
+        "At night",
+        "When I wake up",
+        "Every time I see something we shared",
+        "All the time"],
+        correct: 3 
+      },
+      {
+        q: "If I could be anywhere right now, where would I be?",
+        options: [
+        "On a beach",
+        "With you",
+        "At home sleeping",
+        "On a mountain"],
+        correct: 1
+      },
+      {
+       q: "What would I do if you’re upset?",
+        options: [
+        "Give you space",
+        "Try to make you laugh",
+        "Panic and disappear",
+        "Blame myself"],
+       correct: 1
+      },
+      {
+        q: "How do I feel when we hold hands?",
+        options: [
+        "Nervous",
+        "Calm",
+        "Ticklish",
+        "Strong"],
+        correct: 1
+      },
+      {
+        q: "What’s our perfect date idea?",
+        options: [
+        "Movie night & cuddles",
+        "Amusement park",
+        "Fancy dinner",
+       "Stargazing alone"],
+       correct: 0
+      },
+      {
+        q: "What’s one thing I could never get bored of?",
+        options: [
+        "Watching Netflix",
+        "Listening to your stories",
+        "Gaming",
+        "Sleeping"],
+        correct: 1
+      },
+      {
+        q: "What do you mean to me?",
+        options: [
+       "A best friend",
+       "A secret crush",
+       "My person, my peace, my everything",
+       "My favorite distraction"],
+        correct: 2
+      },
+      {
+       q: "What reminds me most of you?",
+       options: [
+       "The moon 🌕",
+       "My alarm clock ⏰",
+       "Spicy noodles 🌶"],
+       correct: 0
+      },
+      {
+        q: "If I had to say “I love you” in Bhojpuri, how would I say it?",
+        options: [
+        "Hum tohra se mohabbat kareni",
+        "Tohra ke dekh ke hasi aawat hai",
+        "Hum tohra ke bhaat khilaib",
+       "Tohre se baat karke mood bana jaala"],
+       correct: 0
+      },
+      {
+        q: "What’s the Bhojpuri way I’d describe my love for you?",
+        options: [
+        "Chahat ta aisan ba jaise roti me ghee",
+        "Tohre bina jeevan hai sadak ke nali",
+       "Tani muskurai di, mood ban jayi",
+       "Bhauji, hum ho gaya barbaad"],
+       correct: 0
+      },
+      {
+       q: "If I had to propose in Bhojpuri, what would I say?",
+       options: [
+       "Ka karbu zindagi bhar saath chalbu?",
+       "Tohre laayak koi na ba",
+       "Humra ke ghare le jaibu?",
+       "E Madam, haan bol na!"],
+       correct: 0
+      },
+      {
+        q: "How long do I want to love you?",
+        options: [
+        "10 years",
+        "A lifetime",
+       "Until my last breath",
+        "Forever and beyond"],
+       correct: 3
+      },
+      {
+        q: "How long do I want to love you? (from earlier)",
+        options: [
+        "10 years",
+        "A lifetime",
+        "Forever and beyond",
+        "As long as the stars shine"],
+        correct: 3
+      },
+      {
+        q: "I love you because…",
+        options: [
+        "You're perfect to me 💖",
+        "You're taller than me 😄",
+        "You steal my fries 🍟" ],
+        correct: 0
+      }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    function loadQuestion() {
+      const qData = quizData[currentQuestion];
+      const container = document.getElementById("quiz-container");
+      const result = document.getElementById("quiz-result");
+      result.textContent = "";
+      container.innerHTML = `<p>${qData.q}</p>`;
+      qData.options.forEach((opt, idx) => {
+        const btn = document.createElement("button");
+        btn.className = "btn";
+        btn.textContent = opt;
+        btn.onclick = () => {
+          if (idx === qData.correct) score++;
+          nextQuestion();
+        };
+        container.appendChild(btn);
+      });
+    }
+
+    function nextQuestion() {
+      currentQuestion++;
+      if (currentQuestion < quizData.length) {
+        loadQuestion();
+      } else {
+        document.getElementById("quiz-container").innerHTML = "";
+        document.getElementById("quiz-result").textContent = `You scored ${score} out of ${quizData.length}. 🥰`;
+      }
+    }
+
+    loadQuestion();
+
+    // Heart canvas animation
+   // Catch My Love Game
+   const heartCanvas = document.getElementById("heartCanvas");
+   const ctx = heartCanvas.getContext("2d");
+
+   const catcher = { x: 150, y: 360, width: 60, height: 20 };
+   let hearts = [];
+   let catchScore = 0;
+
+   // Generate random hearts
+   function spawnHeart() {
+   hearts.push({
+    x: Math.random() * (heartCanvas.width - 20),
+    y: 0,
+    size: 20,
+    speed: 2 + Math.random() * 2,
+    });
+  }
+   setInterval(spawnHeart, 800);
+
+    // Move catcher with keys
+    // Move catcher with keys
+    document.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowLeft" && catcher.x > 0) catcher.x -= 20;
+    else if (e.key === "ArrowRight" && catcher.x < heartCanvas.width - catcher.width) catcher.x += 20;
+  });
+
+   // Move with mouse/touch
+    heartCanvas.addEventListener("mousemove", (e) => {
+    const rect = heartCanvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    catcher.x = Math.max(0, Math.min(x - catcher.width / 2, heartCanvas.width - catcher.width));
+  });
+
+   heartCanvas.addEventListener("touchmove", (e) => {
+   const rect = heartCanvas.getBoundingClientRect();
+   const touch = e.touches[0];
+   const x = touch.clientX - rect.left;
+   catcher.x = Math.max(0, Math.min(x - catcher.width / 2, heartCanvas.width - catcher.width));
+  });
+
+
+   // Draw heart symbol
+   function drawHeart(x, y, size) {
+   ctx.beginPath();
+   ctx.moveTo(x, y);
+   ctx.bezierCurveTo(x, y - size / 2, x - size, y - size / 2, x - size, y);
+   ctx.bezierCurveTo(x - size, y + size, x, y + size * 1.5, x, y + size * 2);
+   ctx.bezierCurveTo(x, y + size * 1.5, x + size, y + size, x + size, y);
+   ctx.bezierCurveTo(x + size, y - size / 2, x, y - size / 2, x, y);
+   ctx.fillStyle = "#ff4d6d";
+   ctx.fill();
+  }
+
+   // Draw everything
+   function drawCatchGame() {
+   ctx.clearRect(0, 0, heartCanvas.width, heartCanvas.height);
+
+   // Draw catcher
+   ctx.fillStyle = "#FFD700";
+   ctx.fillRect(catcher.x, catcher.y, catcher.width, catcher.height);
+
+   // Draw hearts and move
+   hearts.forEach((heart, index) => {
+    heart.y += heart.speed;
+    drawHeart(heart.x, heart.y, heart.size / 2);
+
+    // Catch detection
+    if (
+      heart.y + heart.size > catcher.y &&
+      heart.x > catcher.x &&
+      heart.x < catcher.x + catcher.width
+    ) {
+      hearts.splice(index, 1);
+      catchScore++;
+      document.getElementById("catch-score").textContent = `Score: ${catchScore}`;
+    } else if (heart.y > heartCanvas.height) {
+      hearts.splice(index, 1); // missed
+    }
+  });
+
+  requestAnimationFrame(drawCatchGame);
+}
+drawCatchGame();
+const messages = [
+    "You put a smile on my face for absolutely no reason at all.",
+    "Just the thought of you brightens up my entire day.",
+    "Whenever I need a moment of peace, you’re where my heart wanders.",
+    "I still get the butterflies every single time I see you.",
+    "Nothing warms me up quite like the sound of your laughter.",
+    "Being with you just makes everything feel so right.",
+    "You’re the one who holds my heart and means everything to me.",
+    "If given the choice, I’d choose you, again and again, in every lifetime.",
+    "Suddenly, every love song feels like it was written about us.",
+    "You make my heart want to dance with happiness.",
+    "I never truly believed in soulmates until you walked into my world.",
+    "You add a sparkle to every little moment we share.",
+    "Even when days are tough, you’re my favorite part of them.",
+    "Saying hello to you is always sweet, and saying goodbye is always the hardest.",
+    "You’re the magic I never realized my heart was missing.",
+    "My love for you grows stronger with every heartbeat.",
+    "When I look at you, I see all my hopes and dreams wrapped up in a future together.",
+    "Your hugs feel like the safest place I’ve ever known.",
+    "With you, everyday moments turn into something extraordinary.",
+    "Loving you has made this world feel so much warmer.",
+    "You inspire me to be the best version of myself.",
+    "You’re truly the best chapter in the story of my life.",
+    "Falling for you felt as easy and natural as breathing.",
+    "It feels like I see little pieces of you in everything beautiful.",
+    "You’re not just my today—you’re every one of my tomorrows, too.",
+    "Nobody else has ever made me feel the way you do.",
+    "With you, believing in forever suddenly sounds possible.",
+    "You’re more than just my love—you’re also my peace.",
+    "No matter what, you’ll always have my heart.",
+    "If my love could write a letter, it’d be spelled out across the night sky, just for you."
+  ];
+
+  const petalContainer = document.getElementById("petals");
+  messages.forEach((msg, index) => {
+    const petal = document.createElement("div");
+    petal.className = "petal";
+    petal.textContent = `🌸 Petal ${index + 1}`;
+    petal.onclick = () => alert(msg);
+    petalContainer.appendChild(petal);
+  }); 
+ function showGift() {
+  document.getElementById("giftModal").style.display = "block";
+}
+
+function closeGift() {
+  document.getElementById("giftModal").style.display = "none";
+}
+const constellationCanvas = document.getElementById("constellationCanvas");
+const ctxConst = constellationCanvas.getContext("2d");
+
+const stars = [
+  { x: 50, y: 80 },  // Top left
+  { x: 250, y: 80 }, // Top right
+  { x: 150, y: 150 },// Middle
+  { x: 80, y: 220 }, // Bottom left
+  { x: 220, y: 220 } // Bottom right
+];
+
+let clickedStars = [];
+
+function drawStars() {
+  ctxConst.clearRect(0, 0, constellationCanvas.width, constellationCanvas.height);
+  stars.forEach((star, i) => {
+    ctxConst.beginPath();
+    ctxConst.arc(star.x, star.y, 8, 0, 2 * Math.PI);
+    ctxConst.fillStyle = clickedStars.includes(i) ? "#e6b800" : "white";
+    ctxConst.shadowColor = clickedStars.includes(i) ? "#e6b800" : "#fff";
+    ctxConst.shadowBlur = 10;
+    ctxConst.fill();
+    ctxConst.closePath();
+  });
+
+  // Draw connecting lines
+  ctxConst.beginPath();
+  ctxConst.strokeStyle = "#e6b800";
+  ctxConst.lineWidth = 2;
+  clickedStars.forEach((index, i) => {
+    const point = stars[index];
+    if (i === 0) ctxConst.moveTo(point.x, point.y);
+    else ctxConst.lineTo(point.x, point.y);
+  });
+  ctxConst.stroke();
+  ctxConst.closePath();
+}
+
+function getStarClicked(x, y) {
+  for (let i = 0; i < stars.length; i++) {
+    const star = stars[i];
+    const dx = star.x - x;
+    const dy = star.y - y;
+    if (Math.sqrt(dx * dx + dy * dy) < 12 && !clickedStars.includes(i)) return i;
+  }
+  return -1;
+}
+
+constellationCanvas.addEventListener("click", (e) => {
+  const rect = constellationCanvas.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  const starIndex = getStarClicked(x, y);
+  if (starIndex !== -1) {
+    clickedStars.push(starIndex);
+    drawStars();
+  }
+
+  if (clickedStars.length === stars.length) {
+    document.getElementById("constellationMessage").textContent =
+      "💖 You connected my heart, Madam! Love you to the stars and back 💖";
+  }
+});
+
+drawStars();
+
+const canvas = document.getElementById("bubbleCanvas");
+const bubbleCtx = canvas.getContext("2d");
+const messageList = document.getElementById("messageList");
+
+const bubbleMessages = [
+ "Seeing you is always the best part of my day. ❤ ",
+  "Just thinking about you puts the biggest smile on my face. 💌",
+  "You’re the reason I can’t help but smile. 😘",
+  "My heart will always belong to you. 💖",
+  "our love is what lights up my life. 🌟",
+  "Life feels magical when you’re by my side. ✨",
+  "With you, I feel like we can take on the world. 💪💕",
+  "You make me feel whole in a way I never knew I needed. 💞",
+  "Somehow, I find myself loving you even more with every new day. 🌹",
+  "Even forever wouldn't be enough time with you. 💍"
+];
+
+let bubbles = bubbleMessages.map((msg, index) => ({
+  x: Math.random() * 260 + 20,
+  y: Math.random() * 200 + 150,
+  radius: 20,
+  speed: Math.random() * 0.5 + 0.2,
+  message: msg,
+  popped: false,
+  id: index
+}));
+
+function drawBubbles() {
+  bubbleCtx.clearRect(0, 0, canvas.width, canvas.height);
+  bubbles.forEach(b => {
+    if (!b.popped) {
+      bubbleCtx.beginPath();
+      bubbleCtx.arc(b.x, b.y, b.radius, 0, Math.PI * 2);
+      bubbleCtx.fillStyle = "#ff66b2";
+      bubbleCtx.globalAlpha = 0.7;
+      bubbleCtx.fill();
+      bubbleCtx.globalAlpha = 1;
+      bubbleCtx.strokeStyle = "#fff";
+      bubbleCtx.stroke();
+    }
+  });
+}
+
+function updateBubbles() {
+  bubbles.forEach(b => {
+    if (!b.popped) {
+      b.y -= b.speed;
+      // If the bubble leaves the top, start again from the bottom
+      if (b.y + b.radius < 0) {
+        b.y = canvas.height + b.radius;
+      }
+    }
+  });
+}
+
+
+canvas.addEventListener("click", function (e) {
+  const rect = canvas.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+
+  bubbles.forEach(b => {
+    if (!b.popped) {
+      const dx = b.x - x;
+      const dy = b.y - y;
+      if (Math.sqrt(dx * dx + dy * dy) < b.radius) {
+        b.popped = true;
+        const msg = document.createElement("p");
+        msg.textContent = `💌 ${b.message}`;
+        messageList.appendChild(msg);
+      }
+    }
+  });
+});
+
+function animate() {
+  drawBubbles();
+  updateBubbles();
+  if (bubbles.some(b => !b.popped)) {
+    requestAnimationFrame(animate);
+  } else {
+    const final = document.createElement("p");
+    final.innerHTML = `<strong>All love messages revealed 💖</strong>`;
+    final.style.color = "#e6b800";
+    final.style.marginTop = "10px";
+    messageList.appendChild(final);
+  }
+}
+
+animate();
+
+
+
+
+  </script>
+
+</body>
+</html>
+
+
+
